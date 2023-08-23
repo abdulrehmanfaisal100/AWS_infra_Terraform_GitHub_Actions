@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-    workflow_dispatch:
-      inputs:
-        confirmation:
-          description: 'Confirmation value for resource destruction'
-          required: true
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Confirmation value for resource destruction'
+        required: true
 
 jobs:
   terraform:
