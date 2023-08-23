@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+    workflow_dispatch:
+      inputs:
+        confirmation:
+          description: 'Confirmation value for resource destruction'
+          required: true
 
 jobs:
   terraform:
@@ -46,27 +51,7 @@ jobs:
       # - name: Terraform Apply
       #   run: terraform apply -auto-approve
 
-name: Manual Terraform Destroy
-
-on:
-  workflow_dispatch:
-    inputs:
-      confirmation:
-        description: 'Confirmation value for resource destruction'
-        required: true
-jobs:
-  terraform_destroy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Terraform
-      uses: hashicorp/setup-terraform@v1
-      with:
-        terraform_version: 1.5.5
-
-    - name: Terraform Destroy
-      run: |
-        echo "${{ github.event.inputs.confirmation }}" | terraform destroy
+      - name: Manual Terraform Destroy
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          echo "${{ github.event.inputs.confirmation }}" | terraform destroy
