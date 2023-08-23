@@ -6,13 +6,13 @@ variable "profile" {
   default = "default"
 }
 
-variable "public_instance" {
-  type = string
-}
+# variable "public_instance" {
+#   type = string
+# }
 
-variable "private_instance" {
-  type = string
-}
+# variable "private_instance" {
+#   type = string
+# }
 
 variable "availabilityZone" {
   default = "us-east-1a"
@@ -51,6 +51,6 @@ variable "mapPublicIP" {
   default = true
 }
 
-variable "bucket_name" {
-  type = string
-}
+# variable "bucket_name" {
+#   type = string
+# }
