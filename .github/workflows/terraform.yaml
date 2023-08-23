@@ -43,8 +43,30 @@ jobs:
         id: plan
         run: terraform plan
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      # - name: Terraform Apply
+      #   run: terraform apply -auto-approve
 
-      - name: Terraform Destroy
-        run: terraform destroy
+name: Manual Terraform Destroy
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: 'Confirmation value for resource destruction'
+        required: true
+jobs:
+  terraform_destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.5.5
+
+    - name: Terraform Destroy
+      run: |
+        echo "${{ github.event.inputs.confirmation }}" | terraform destroy
