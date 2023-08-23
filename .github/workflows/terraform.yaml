@@ -54,4 +54,5 @@ jobs:
       - name: Manual Terraform Destroy
         if: github.event_name == 'workflow_dispatch'
         run: |
+          echo "Confirmation received: ${{ github.event.inputs.confirmation }}"
           echo "${{ github.event.inputs.confirmation }}" | terraform destroy
