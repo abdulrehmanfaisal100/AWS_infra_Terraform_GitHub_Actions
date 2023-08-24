@@ -113,7 +113,7 @@ resource "aws_route_table_association" "My_VPC_association" {
 
 #create S3 bucket
 resource "aws_s3_bucket" "b" {
-  bucket = "check-assignment-abdrehuz"
+  bucket = "check-assignment-abdrehucx"
   acl    = "private"
 
   tags = {
