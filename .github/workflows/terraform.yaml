@@ -1,83 +1,32 @@
 name: "Terraform"
 
-# on:
-#   push:
-#     branches:
-#       - main
-#   workflow_dispatch:
-#     inputs:
-#       confirmation:
-#         description: 'Confirmation value for resource destruction'
-#         required: true
-
-# jobs:
-#   terraform:
-#     name: "Terraform"
-#     runs-on: ubuntu-latest
-#     env:
-#       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#     defaults:
-#       run:
-#         working-directory: ./
-#     steps:
-#       - name: Checkout
-#         uses: actions/checkout@v2
-
-
-#       - name: Set up AWS credentials
-#         run: |
-#           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-#           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-
-#       - name: Setup Terraform
-#         uses: hashicorp/setup-terraform@v1
-#         with:
-#           terraform_version: 1.5.5
-#           terraform_wrapper: false
-
-#       - name: Terraform Format
-#         id: fmt
-#         run: terraform fmt -check
-
-#       - name: Terraform Init
-#         id: init
-#         run: terraform init
-
-#       - name: Terraform Plan
-#         id: plan
-#         run: terraform plan
-
-#       # - name: Terraform Apply
-#       #   run: terraform apply -auto-approve
-
-#       - name: Manual Terraform Destroy
-#         if: github.event_name == 'workflow_dispatch'
-#         run: |
-#           echo "Confirmation received: ${{ github.event.inputs.confirmation }}"
-#           echo "${{ github.event.inputs.confirmation }}" | terraform destroy
-
-
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       terraform_operation:
-        description: "Terraform operation: plan, apply, destroy"
+        description: "Terraform operation: destroy"
         required: true
-        default: "plan"
+        default: "destroy"
         type: choice
         options:
-          - plan
-          - apply
           - destroy
 
 jobs:
   terraform:
-    name: "terraform"
+    name: "Terraform"
     runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    defaults:
+      run:
+        working-directory: ./
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v2
 
 
       - name: Set up AWS credentials
@@ -87,21 +36,74 @@ jobs:
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.5.5
+          terraform_wrapper: false
 
-      - name: Go to the example directory
-        run: cd ./
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt -check
 
-      - name: Terraform init
+      - name: Terraform Init
+        id: init
         run: terraform init
 
-      - name: Terraform plan
+      - name: Terraform Plan
+        id: plan
         run: terraform plan
-        if: "${{ github.event.inputs.terraform_operation == 'plan' }}"
 
-      - name: Terraform apply
-        run: terraform apply --auto-approve
-        if: "${{ github.event.inputs.terraform_operation == 'apply' }}"
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
       - name: Terraform destroy
         run: terraform destroy --auto-approve
         if: "${{ github.event.inputs.terraform_operation == 'destroy' }}"
+
+
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       terraform_operation:
+#         description: "Terraform operation: plan, apply, destroy"
+#         required: true
+#         default: "plan"
+#         type: choice
+#         options:
+#           - plan
+#           - apply
+#           - destroy
+
+# jobs:
+#   terraform:
+#     name: "terraform"
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v3
+
+
+#       - name: Set up AWS credentials
+#         run: |
+#           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+#           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+
+#       - name: Setup Terraform
+#         uses: hashicorp/setup-terraform@v1
+
+#       - name: Go to the example directory
+#         run: cd ./
+
+#       - name: Terraform init
+#         run: terraform init
+
+#       - name: Terraform plan
+#         run: terraform plan
+#         if: "${{ github.event.inputs.terraform_operation == 'plan' }}"
+
+#       - name: Terraform apply
+#         run: terraform apply --auto-approve
+#         if: "${{ github.event.inputs.terraform_operation == 'apply' }}"
+
+#       - name: Terraform destroy
+#         run: terraform destroy --auto-approve
+#         if: "${{ github.event.inputs.terraform_operation == 'destroy' }}"
