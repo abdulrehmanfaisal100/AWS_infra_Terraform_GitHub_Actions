@@ -16,7 +16,7 @@
 # }
 terraform {
   backend "s3" {
-    bucket         = "check-assignment-abdrehxcv"
+    bucket         = "check-assignment-abdrehxcy"
     key            = "statefiles/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
@@ -37,6 +37,7 @@ terraform {
 #       }
 #     }
 #   }
+#   force_destroy = true
 # }
 # resource "aws_dynamodb_table" "statelock" {
 #   name         = "verify"
