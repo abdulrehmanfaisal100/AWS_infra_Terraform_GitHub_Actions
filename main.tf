@@ -1,20 +1,20 @@
-terraform { #terraform block is used to specify configuration settings for the project
-  required_providers { #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
-    aws = { #configuration of AWS plugin, can change name
+terraform {                     #terraform block is used to specify configuration settings for the project
+  required_providers {          #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
+    aws = {                     #configuration of AWS plugin, can change name
       source  = "hashicorp/aws" #source to download the plugin
-      version = "~> 4.16" #specify the version of plugin, it will pick the latest version in series of 4.x
+      version = "~> 4.16"       #specify the version of plugin, it will pick the latest version in series of 4.x
     }
   }
   required_version = ">= 1.2.0" #minimum version of terraform 
 }
 
-provider "aws" { #configuring the aws provider
-  region  = var.region #terraform apply -var="profile=your_profile_name" (INSTEAD OF USING DEFAULT)
+provider "aws" {        #configuring the aws provider
+  region  = var.region  #terraform apply -var="profile=your_profile_name" (INSTEAD OF USING DEFAULT)
   profile = var.profile #profile for authentication, I haven't specified default profile but the profile associated with access keys is typically set default
 }
 # create the VPC
 resource "aws_vpc" "My_VPC" { #aws_vpc is a keyword
-  cidr_block           = var.vpcCIDRblock
+  cidr_block = var.vpcCIDRblock
   # instance_tenancy     = var.instanceTenancy
   # enable_dns_support   = var.dnsSupport
   # enable_dns_hostnames = var.dnsHostNames
@@ -49,13 +49,13 @@ resource "aws_security_group" "My_VPC_Security_Group_Private" {
   name        = "My VPC Security Group Private"
   description = "My VPC Security Group Private"
   ingress {
-    security_groups = ["${aws_security_group.My_VPC_Security_Group_Public.id}"]#traffic from public subnet is allowed
-    from_port       = 0 #0 means all ports
+    security_groups = ["${aws_security_group.My_VPC_Security_Group_Public.id}"] #traffic from public subnet is allowed
+    from_port       = 0                                                         #0 means all ports
     to_port         = 0
     protocol        = "-1" #all protocols are allowed
   }
   egress {
-    cidr_blocks = ["0.0.0.0/0"]#"0.0.0.0/0" indicates that traffic can be sent to any destination IP address.
+    cidr_blocks = ["0.0.0.0/0"] #"0.0.0.0/0" indicates that traffic can be sent to any destination IP address.
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -69,7 +69,7 @@ resource "aws_security_group" "My_VPC_Security_Group_Public" {
   name        = "My VPC Security Group Public"
   description = "My VPC Security Group Public"
   ingress {
-    cidr_blocks = ["${var.ingressCIDRblockPub}"]#only IPs allowed by the variable can access the vpc instances
+    cidr_blocks = ["${var.ingressCIDRblockPub}"] #only IPs allowed by the variable can access the vpc instances
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -93,18 +93,18 @@ resource "aws_internet_gateway" "My_VPC_GW" { #safe to assign this way because w
   }
 } # end resource
 # Create the Route Table
-resource "aws_route_table" "My_VPC_route_table" {#Route table is for traffic within the vpc
+resource "aws_route_table" "My_VPC_route_table" { #Route table is for traffic within the vpc
   vpc_id = aws_vpc.My_VPC.id
-  tags = {#Additionally, you'll need to associate your subnets with this route table. Each subnet should have an associated route table to define how traffic is routed within that subnet. You can use the aws_route_table_association resource to associate your subnets with the route table.
+  tags = { #Additionally, you'll need to associate your subnets with this route table. Each subnet should have an associated route table to define how traffic is routed within that subnet. You can use the aws_route_table_association resource to associate your subnets with the route table.
     Name = "My VPC Route Table"
   }
 } # end resource
 # Create the Internet Access
 resource "aws_route" "My_VPC_internet_access" {
   route_table_id         = aws_route_table.My_VPC_route_table.id
-  destination_cidr_block = var.destinationCIDRblock#represents the IP addresses allowed to use the internet
+  destination_cidr_block = var.destinationCIDRblock #represents the IP addresses allowed to use the internet
   gateway_id             = aws_internet_gateway.My_VPC_GW.id
-} 
+}
 # Associate the Route Table with the Subnet
 resource "aws_route_table_association" "My_VPC_association" {
   subnet_id      = aws_subnet.My_VPC_Subnet_Public.id
