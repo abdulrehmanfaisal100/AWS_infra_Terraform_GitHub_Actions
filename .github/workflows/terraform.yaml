@@ -12,6 +12,17 @@ on:
           - plan
           - apply
           - destroy
+  workflow_dispatch: #triggered manually
+    inputs:
+      terraform_operation: #input parameter
+        description: "Terraform operation: plan, apply, destroy"
+        required: true
+        default: "plan"
+        type: choice #type of input parameter
+        options:
+          - plan
+          - apply
+          - destroy
 #GITHUB runner performs these jobs, runner is a VM given by github
 jobs:
   terraform:
