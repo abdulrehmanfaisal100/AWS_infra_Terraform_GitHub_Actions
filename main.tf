@@ -6,48 +6,48 @@ terraform {                     #terraform block is used to specify configuratio
     }
   }
   required_version = ">= 1.2.0" #minimum version of terraform 
-  backend "s3" {
-    bucket         = "check-assignment-abdrehuceq"
-    key            = "statefiles/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "assignment4_state_lock_12345"
-  }
+  # backend "s3" {
+  #   bucket         = "check-assignment-abdrehucev"
+  #   key            = "statefiles/terraform.tfstate"
+  #   region         = "us-east-1"
+  #   encrypt        = true
+  #   dynamodb_table = "verify"
+  # }
 }
 # terraform {
 #   backend "s3" {
-#     bucket         = "assignment4tfstate12343212"
+#     bucket         = "verify"
 #     key            = "statefiles/terraform.tfstate"
 #     region         = "us-east-1"
 #     encrypt        = true
-#     dynamodb_table = "assignment4_state_lock_12345"
+#     dynamodb_table = "verify"
 #   }
 # }
 
-resource "aws_s3_bucket" "b" {
-  bucket = "check-assignment-abdrehuceq"
-  acl    = "private"
-  versioning {
-    enabled = true
-  }
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-}
-resource "aws_dynamodb_table" "statelock" {
-  name         = "assignment4_state_lock_12345"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LOCKID"
-  attribute {
-    name = "LOCKID"
-    type = "S"
-  }
+# resource "aws_s3_bucket" "b" {
+#   bucket = "check-assignment-abdrehucev"
+#   acl    = "private"
+#   versioning {
+#     enabled = true
+#   }
+#   server_side_encryption_configuration {
+#     rule {
+#       apply_server_side_encryption_by_default {
+#         sse_algorithm = "AES256"
+#       }
+#     }
+#   }
+# }
+# resource "aws_dynamodb_table" "statelock" {
+#   name         = "verify"
+#   billing_mode = "PAY_PER_REQUEST"
+#   hash_key     = "LOCKID"
+#   attribute {
+#     name = "LOCKID"
+#     type = "S"
+#   }
 
-}
+# }
 
 
 provider "aws" {        #configuring the aws provider
@@ -154,12 +154,12 @@ resource "aws_route_table_association" "My_VPC_association" {
 }
 
 #create S3 bucket
-# resource "aws_s3_bucket" "b" {
-#   bucket = "check-assignment-abdrehuce"
-#   acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
+resource "aws_s3_bucket" "b" {
+  bucket = "check-assignment-abdrehuce"
+  acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
 
-#   tags = {
-#     Name = "My bucket"
-#   }
-# }
+  tags = {
+    Name = "My bucket"
+  }
+}
 
