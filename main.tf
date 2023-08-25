@@ -113,7 +113,7 @@ resource "aws_route_table_association" "My_VPC_association" {
 
 #create S3 bucket
 resource "aws_s3_bucket" "b" {
-  bucket = "check-assignment-abdrehucq"
+  bucket = "check-assignment-abdrehuce"
   acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
 
   tags = {
