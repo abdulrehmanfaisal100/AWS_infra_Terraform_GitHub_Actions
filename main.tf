@@ -48,7 +48,7 @@ terraform {
 #   }
 
 # }
-
+#
 
 provider "aws" {        #configuring the aws provider
   region  = var.region  #terraform apply -var="profile=your_profile_name" (INSTEAD OF USING DEFAULT)
