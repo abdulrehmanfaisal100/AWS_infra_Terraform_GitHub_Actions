@@ -47,15 +47,15 @@ jobs:
         run: terraform init #creates lock.hcl file so that version can be controlled.
 
       - name: Terraform plan
-        run: terraform plan
+        run: terraform plan -lock=false
         if: "${{ github.event.inputs.terraform_operation == 'plan' }}"
 
       - name: Terraform apply
-        run: terraform apply --auto-approve
+        run: terraform apply -lock=false --auto-approve
         if: ${{ github.event.inputs.terraform_operation == 'apply' }}
 
       - name: Terraform destroy
-        run: terraform destroy --auto-approve
+        run: terraform destroy -lock=false --auto-approve
         if: "${{ github.event.inputs.terraform_operation == 'destroy' }}"
 
 
