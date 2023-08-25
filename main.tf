@@ -1,11 +1,20 @@
-terraform {                     #terraform block is used to specify configuration settings for the project
-  required_providers {          #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
-    aws = {                     #configuration of AWS plugin, can change name
-      source  = "hashicorp/aws" #source to download the plugin
-      version = "~> 4.16"       #specify the version of plugin, it will pick the latest version in series of 4.x
-    }
-  }
-  required_version = ">= 1.2.0" #minimum version of terraform 
+# terraform {                     #terraform block is used to specify configuration settings for the project
+#   required_providers {          #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
+#     aws = {                     #configuration of AWS plugin, can change name
+#       source  = "hashicorp/aws" #source to download the plugin
+#       version = "~> 4.16"       #specify the version of plugin, it will pick the latest version in series of 4.x
+#     }
+#   }
+#   required_version = ">= 1.2.0" #minimum version of terraform 
+#   backend "s3" {
+#     bucket         = "assignment4tfstate12345"
+#     key            = "statefiles/terraform.tfstate"
+#     region         = "us-east-1"
+#     encrypt        = true
+#     dynamodb_table = "assignment4_state_lock_12345"
+#   }
+# }
+terraform {
   backend "s3" {
     bucket         = "assignment4tfstate12345"
     key            = "statefiles/terraform.tfstate"
@@ -14,6 +23,31 @@ terraform {                     #terraform block is used to specify configuratio
     dynamodb_table = "assignment4_state_lock_12345"
   }
 }
+
+resource "aws_s3_bucket" "statefilebucket123" {
+  bucket = "assignment4tfstate12345"
+  versioning {
+    enabled = true
+  }
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+}
+resource "aws_dynamodb_table" "statelock" {
+  name         = "assignment4_state_lock_12345"
+  billing_mode = "PAY_PER_REQUEST"
+  hash_key     = "LOCKID"
+  attribute {
+    name = "LOCKID"
+    type = "S"
+  }
+
+}
+
 
 provider "aws" {        #configuring the aws provider
   region  = var.region  #terraform apply -var="profile=your_profile_name" (INSTEAD OF USING DEFAULT)
@@ -120,66 +154,11 @@ resource "aws_route_table_association" "My_VPC_association" {
 
 #create S3 bucket
 resource "aws_s3_bucket" "b" {
-  # bucket = "check-assignment-abdrehuce"
-  # acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
+  bucket = "check-assignment-abdrehuce"
+  acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
 
-  # tags = {
-  #   Name = "My bucket"
-  # }
-  bucket = "check-assignment-abdrehucre"
-  versioning {
-    enabled = true
-  }
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
+  tags = {
+    Name = "My bucket"
   }
 }
 
-resource "aws_dynamodb_table" "statelock" {
-  name         = "assignment4_state_lock_12345"
-  billing_mode = "PAY_PER_REQUEST"
-  hash_key     = "LOCKID"
-  attribute {
-    name = "LOCKID"
-    type = "S"
-  }
-
-}
-
-# terraform {
-#   backend "s3" {
-#     bucket         = "assignment4tfstate12345"
-#     key            = "statefiles/terraform.tfstate"
-#     region         = "us-east-1"
-#     encrypt        = true
-#     dynamodb_table = "assignment4_state_lock_12345"
-#   }
-# }
-
-# resource "aws_s3_bucket" "statefilebucket123" {
-#   bucket = "assignment4tfstate12345"
-#   versioning {
-#     enabled = true
-#   }
-#   server_side_encryption_configuration {
-#     rule {
-#       apply_server_side_encryption_by_default {
-#         sse_algorithm = "AES256"
-#       }
-#     }
-#   }
-# }
-# resource "aws_dynamodb_table" "statelock" {
-#   name         = "assignment4_state_lock_12345"
-#   billing_mode = "PAY_PER_REQUEST"
-#   hash_key     = "LOCKID"
-#   attribute {
-#     name = "LOCKID"
-#     type = "S"
-#   }
-
-# }
