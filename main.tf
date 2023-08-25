@@ -16,7 +16,7 @@
 # }
 terraform {
   backend "s3" {
-    bucket         = "assignment4tfstate12345"
+    bucket         = "assignment4tfstate123432"
     key            = "statefiles/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
@@ -25,7 +25,7 @@ terraform {
 }
 
 resource "aws_s3_bucket" "statefilebucket123" {
-  bucket = "assignment4tfstate12345"
+  bucket = "assignment4tfstate123432"
   versioning {
     enabled = true
   }
@@ -153,12 +153,12 @@ resource "aws_route_table_association" "My_VPC_association" {
 }
 
 #create S3 bucket
-resource "aws_s3_bucket" "b" {
-  bucket = "check-assignment-abdrehuce"
-  acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
+# resource "aws_s3_bucket" "b" {
+#   bucket = "check-assignment-abdrehuce"
+#   acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
 
-  tags = {
-    Name = "My bucket"
-  }
-}
+#   tags = {
+#     Name = "My bucket"
+#   }
+# }
 
