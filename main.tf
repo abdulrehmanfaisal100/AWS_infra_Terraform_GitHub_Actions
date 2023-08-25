@@ -117,6 +117,6 @@ resource "aws_s3_bucket" "b" {
   acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
 
   tags = {
-    Name        = "My bucket"
+    Name = "My bucket"
   }
 }
