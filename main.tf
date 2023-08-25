@@ -7,7 +7,7 @@ terraform {                     #terraform block is used to specify configuratio
   }
   required_version = ">= 1.2.0" #minimum version of terraform 
   backend "s3" {
-    bucket         = "check-assignment-abdrehuce"
+    bucket         = "check-assignment-abdrehuceq"
     key            = "statefiles/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
@@ -25,7 +25,7 @@ terraform {                     #terraform block is used to specify configuratio
 # }
 
 resource "aws_s3_bucket" "b" {
-  bucket = "check-assignment-abdrehuce"
+  bucket = "check-assignment-abdrehuceq"
   acl    = "private"
   versioning {
     enabled = true
