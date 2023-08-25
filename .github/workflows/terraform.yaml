@@ -54,7 +54,12 @@ jobs:
       - name: Terraform apply
         run: terraform apply --auto-approve
         if: ${{ github.event.inputs.terraform_operation == 'apply' }}
-
+  Destroy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
       - name: Terraform destroy
         run: terraform destroy --auto-approve
         if: "${{ github.event.inputs.terraform_operation == 'destroy' }}"
