@@ -44,9 +44,9 @@ terraform {
    hash_key     = "LOCKID"
    attribute {
      name = "LOCKID"
-     type = "S"   }
-
- }
+     type = "S"   
+    }
+}
 
 
 provider "aws" {        #configuring the aws provider
