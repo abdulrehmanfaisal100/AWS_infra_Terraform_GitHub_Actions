@@ -1,31 +1,32 @@
-# terraform {                     #terraform block is used to specify configuration settings for the project
-#   required_providers {          #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
-#     aws = {                     #configuration of AWS plugin, can change name
-#       source  = "hashicorp/aws" #source to download the plugin
-#       version = "~> 4.16"       #specify the version of plugin, it will pick the latest version in series of 4.x
-#     }
-#   }
-#   required_version = ">= 1.2.0" #minimum version of terraform 
-#   backend "s3" {
-#     bucket         = "assignment4tfstate12345"
-#     key            = "statefiles/terraform.tfstate"
-#     region         = "us-east-1"
-#     encrypt        = true
-#     dynamodb_table = "assignment4_state_lock_12345"
-#   }
-# }
-terraform {
+terraform {                     #terraform block is used to specify configuration settings for the project
+  required_providers {          #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
+    aws = {                     #configuration of AWS plugin, can change name
+      source  = "hashicorp/aws" #source to download the plugin
+      version = "~> 4.16"       #specify the version of plugin, it will pick the latest version in series of 4.x
+    }
+  }
+  required_version = ">= 1.2.0" #minimum version of terraform 
   backend "s3" {
-    bucket         = "assignment4tfstate12343212"
+    bucket = "check-assignment-abdrehuce"
     key            = "statefiles/terraform.tfstate"
     region         = "us-east-1"
     encrypt        = true
     dynamodb_table = "assignment4_state_lock_12345"
   }
 }
+# terraform {
+#   backend "s3" {
+#     bucket         = "assignment4tfstate12343212"
+#     key            = "statefiles/terraform.tfstate"
+#     region         = "us-east-1"
+#     encrypt        = true
+#     dynamodb_table = "assignment4_state_lock_12345"
+#   }
+# }
 
-resource "aws_s3_bucket" "statefilebucket123" {
-  bucket = "assignment4tfstate12343212"
+resource "aws_s3_bucket" "b" {
+  bucket = "check-assignment-abdrehuce"
+  acl    = "private"
   versioning {
     enabled = true
   }
