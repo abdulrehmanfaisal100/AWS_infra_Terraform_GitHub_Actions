@@ -1,28 +1,28 @@
-# terraform {                     #terraform block is used to specify configuration settings for the project
-#   required_providers {          #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
-#     aws = {                     #configuration of AWS plugin, can change name
-#       source  = "hashicorp/aws" #source to download the plugin
-#       version = "~> 4.16"       #specify the version of plugin, it will pick the latest version in series of 4.x
-#     }
-#   }
-#   required_version = ">= 1.2.0" #minimum version of terraform 
+terraform {                    #terraform block is used to specify configuration settings for the project
+  required_providers {         #providers that terraform will use. Providers are an abstraction of API, responsible for exposing resources
+    aws = {                    #configuration of AWS plugin, can change name
+      source = "hashicorp/aws" #source to download the plugin
+      #specify the version of plugin, it will pick the latest version in series of 4.x
+    }
+  }
+  required_version = ">= 1.2.0" #minimum version of terraform 
+  # backend "s3" {
+  #   bucket         = "check-assignment-abdrehucev"
+  #   key            = "statefiles/terraform.tfstate"
+  #   region         = "us-east-1"
+  #   encrypt        = true
+  #   dynamodb_table = "verify"
+  # }
+}
+# terraform {
 #   backend "s3" {
-#     bucket         = "check-assignment-abdrehucev"
+#     bucket         = "check-assignment-abdrehxcy"
 #     key            = "statefiles/terraform.tfstate"
 #     region         = "us-east-1"
 #     encrypt        = true
 #     dynamodb_table = "verify"
 #   }
 # }
-terraform {
-  backend "s3" {
-    bucket         = "check-assignment-abdrehxcy"
-    key            = "statefiles/terraform.tfstate"
-    region         = "us-east-1"
-    encrypt        = true
-    dynamodb_table = "verify"
-  }
-}
 
 # resource "aws_s3_bucket" "b" {
 #   bucket = "check-assignment-abdrehxcv"
@@ -153,13 +153,13 @@ resource "aws_route_table_association" "My_VPC_association" {
   route_table_id = aws_route_table.My_VPC_route_table.id
 }
 
-#create S3 bucket
-# resource "aws_s3_bucket" "b" {
-#   bucket = "check-assignment-abdrehxcv"
-#   acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
+# create S3 bucket
+resource "aws_s3_bucket" "b" {
+  bucket = "check-assignment-abdrehxcv"
+  acl    = "private" #ACL stands for access control list and here it is specified that only the owner has access to it who made this bucket
 
-#   tags = {
-#     Name = "My bucket"
-#   }
-# }
+  tags = {
+    Name = "My bucket"
+  }
+}
 
