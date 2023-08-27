@@ -6,23 +6,14 @@ terraform {                    #terraform block is used to specify configuration
     }
   }
   required_version = ">= 1.2.0" #minimum version of terraform 
-  # backend "s3" {
-  #   bucket         = "bucketforstatefiles143883"
-  #   key            = "statefiles/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   encrypt        = true
-  #   dynamodb_table = "verify"
-  # }
+  backend "s3" {
+    bucket         = "bucketforterraformbackend5347"
+    key            = "statefiles/terraform.tfstate"
+    region         = "us-east-1"
+    encrypt        = true
+    dynamodb_table = "verify"
+  }
 }
-# terraform {
-#   backend "s3" {
-#     bucket         = "check-assignment-abdrehxcy"
-#     key            = "statefiles/terraform.tfstate"
-#     region         = "us-east-1"
-#     encrypt        = true
-#     dynamodb_table = "verify"
-#   }
-# }
 
 # resource "aws_s3_bucket" "b" {
 #   bucket = "check-assignment-abdrehxcv"
