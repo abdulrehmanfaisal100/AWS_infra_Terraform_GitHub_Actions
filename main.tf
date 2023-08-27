@@ -103,8 +103,8 @@ resource "aws_security_group" "My_VPC_Security_Group_Public" {
   description = "My VPC Security Group Public"
   ingress {
     cidr_blocks = ["${var.ingressCIDRblockPub}"] #only IPs allowed by the variable can access the vpc instances
-    from_port   = 22
-    to_port     = 22
+    from_port   = 0
+    to_port     = 0
     protocol    = "tcp"
   }
   egress {
